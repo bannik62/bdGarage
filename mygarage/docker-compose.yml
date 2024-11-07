@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./back
+    container_name: express_backend
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=garage_user
+      - DB_PASSWORD=garage_password
+      - DB_NAME=db_garage
+    networks:
+      - garage
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: apache_frontend
+    networks:
+      - garage
+    ports:
+      - "80:80"  # Expose le front-end sur le port 80
+
+  db:
+    image: mysql:8.0
+    container_name: db_garage
+    environment:
+      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_DATABASE: db_garage
+      MYSQL_USER: garage_user
+      MYSQL_PASSWORD: garage_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./back/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - garage
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db               # Nom du service MySQL (assurez-vous qu'il correspond au nom du conteneur de la base)
+      MYSQL_ROOT_PASSWORD: example_password # Utiliser le même mot de passe root que dans le service `db`
+    ports:
+      - "8080:80"                # Expose phpMyAdmin sur le port 8080
+    depends_on:
+      - db
+    networks:
+      - garage
+
+networks:
+  garage:
+    driver: bridge
+
+volumes:
+  db_data:
