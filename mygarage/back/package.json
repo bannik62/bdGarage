@@ -1,12 +1,22 @@
 {
   "name": "back",
   "version": "1.0.0",
+  "description": "Un projet Svelte avec Vite",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["svelte", "vite", "frontend"],
+  "author": "TonNom",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "svelte": "^3.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.0.0",
+    "vite": "^4.0.0"
+  }
 }

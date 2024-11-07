@@ -4,13 +4,14 @@ import sequelize from '../config/database.mjs';
 import Vehicle from '../model/vehicle.mjs';
 import User from '../model/user.mjs';
 import protectedRouter from '../routes/protectedRoutes.mjs';
-import vehicleRoutes from './routes/vehicleRoutes.mjs';
-app.use('/api', vehicleRoutes);
+import vehicleRoutes from '../routes/vehiculeRoutes.mjs';
+const app = express();
 
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/protected', protectedRouter);
 
 dotenv.config();
 
-const app = express();
 app.use(express.json());
 
 // Synchronisation de la base de données
@@ -38,7 +39,6 @@ app.get('/', (req, res) => {
 });
 
 // Routes protégées
-app.use('/api', protectedRouter);
 
 
 
